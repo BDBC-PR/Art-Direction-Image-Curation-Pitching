@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDBC - Art Direction - Email Image Curation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .expand-all {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        .expand-all:hover {
+            background: #5568d3;
+        }
+        
+        .decision-box {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .decision-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .option {
+            background: white;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .option-header:hover {
+            opacity: 0.9;
+        }
+        
+        .option-header.yes {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .option-header.no {
+            background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+        }
+        
+        .option-content {
+            padding: 20px;
+            display: none;
+        }
+        
+        .option-content.active {
+            display: block;
+        }
+        
+        .arrow {
+            transition: transform 0.3s;
+        }
+        
+        .arrow.rotated {
+            transform: rotate(180deg);
+        }
+        
+        .step-box {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .step-header {
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+        
+        .step-content {
+            padding: 20px;
+            display: none;
+        }
+        
+        .step-content.active {
+            display: block;
+        }
+        
+        .flow-arrow {
+            text-align: center;
+            color: #667eea;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        
+        .important-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .tip-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        strong {
+            color: #667eea;
+        }
+        
+        .completion {
+            text-align: center;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 BDBC - Art Direction - Email Image Curation</h1>
+        <p class="subtitle">Complete workflow for selecting, editing, and organizing pitch images | Click sections to expand/collapse</p>
+        
+        <button class="expand-all" onclick="toggleAll()">Expand All Steps</button>
+        
+        <div class="decision-box">
+            <div class="decision-title">DID THE CLIENT PROVIDE IMAGERY?</div>
+            
+            <div class="option">
+                <div class="option-header yes" onclick="toggleOption(this)">
+                    <span>✓ YES - Client Provided Imagery</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="option-content">
+                    <p><strong>Download/open all images</strong></p>
+                    <div class="flow-arrow">↓</div>
+                    <p><strong>Review which images are already in Landscape</strong></p>
+                    <div class="flow-arrow">↓</div>
+                    <p><strong>Identify which images could be combined to create a landscape</strong><br>
+                    (2 portrait images can be combined)</p>
+                    
+                    <div class="important-box">
+                        <strong>If saving images from a Dropbox</strong><br>
+                        <strong>IN-ALBUM IMAGE NAMING STRUCTURE</strong>
+                        <ul>
+                            <li>Add Brand_Name_ to the file names - don't change the file names.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="option">
+                <div class="option-header no" onclick="toggleOption(this)">
+                    <span>✗ NO - Load from Brand's Website</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="option-content">
+                    <p><strong>R-click, open each image in a new tab</strong><br>
+                    Then R-click Save</p>
+                    
+                    <div class="warning-box">
+                        <strong>⚠️ IMPORTANT: GETTING HIGH-RESOLUTION IMAGES</strong><br><br>
+                        <strong>Once you right click an image and open it to a new tab:</strong><br><br>
+                        <strong>Delete the text after "jpg" or "webp" in the URL</strong><br>
+                        This allows you to get a higher resolution of the image.<br><br>
+                        Then download it.
+                    </div>
+                    
+                    <div class="important-box">
+                        <strong>IN-ALBUM IMAGE NAMING STRUCTURE</strong>
+                        <ul>
+                            <li>Add Brand_Name_ to the file names - don't change the file names.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="important-box">
+                        <strong>If the file saves as an AVIF:</strong><br>
+                        Open it in Preview (Mac) or Photos (Windows) and convert it to JPEG.<br><br>
+                        
+                        <strong>On Mac (Preview):</strong>
+                        <ol>
+                            <li>Open the AVIF file in <strong>Preview</strong></li>
+                            <li>Go to File → Export</li>
+                            <li>Select JPEG from the Format dropdown menu</li>
+                            <li>Click Save</li>
+                        </ol>
+                        
+                        <strong>On Windows (Microsoft Photos):</strong>
+                        <ol>
+                            <li>Open the AVIF file with the <strong>Photos app</strong></li>
+                            <li>Click the three dots (More options) and choose Save as</li>
+                            <li>Select JPEG from the format options and save</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <strong>💡 WHY THIS METHOD?</strong><br>
+                        This allows you to get the image in High-Resolution and in the correct format for your pitch
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <div class="important-box">
+            <strong>YOU WILL NEED TO SELECT:</strong>
+            <ul>
+                <li><strong>A Flat lay of product</strong> - For Dropbox Folder to share with writers (don't include in the body of the pitch)</li>
+                <li><strong>Full Product on Model</strong> - For email and Dropbox Folder to share with writers</li>
+                <li><strong>Close up image of product</strong> - For email and Dropbox Folder to share with writers</li>
+                <li><strong>Repeat the above for each colorway</strong> - For email and Dropbox Folder to share with writers</li>
+            </ul>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <div class="success-box">
+            <strong>EVERY IMAGE SHOULD BE:</strong>
+            <ul>
+                <li>📏 700px WIDE</li>
+                <li>📐 467px HIGH</li>
+                <li>🖼️ 72 DPI</li>
+            </ul>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <!-- STEP 1 -->
+        <div class="step-box">
+            <div class="step-header" onclick="toggleStep(this)">
+                <span>STEP 1: Open Canva & Upload Images</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="step-content">
+                <p><strong>Upload the images you just saved/downloaded</strong></p>
+                
+                <p><strong>In Canva a 700px x 467px template can be used every time</strong></p>
+                
+                <div class="important-box">
+                    <strong>Name each image "slide" as follows:</strong><br><br>
+                    <strong>EMAIL IMAGE NAMING STRUCTURE:</strong>
+                    <ul>
+                        <li>Brand_Name_Exact_Product_Name_as_it_Appears_on_PDP_EMAIL_01.jpg / .png</li>
+                        <li>Brand_Name_Exact_Collection_Name_EMAIL_01.jpg / .png</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 TEMPLATE TIP:</strong><br>
+                    Create this template once and save it - you'll use it for every pitch!
+                </div>
+            </div>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <!-- STEP 2 -->
+        <div class="step-box">
+            <div class="step-header" onclick="toggleStep(this)">
+                <span>STEP 2: Using 2 Images in Landscape? Follow These Steps</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="step-content">
+                <div class="warning-box">
+                    <strong>⚠️ ONLY IF USING 2 IMAGES:</strong><br>
+                    If you're only using 1 image, skip to Step 3
+                </div>
+                
+                <p><strong>RESIZING TWO IMAGES:</strong></p>
+                <ol>
+                    <li>Add both images to the template</li>
+                    <li>Click on one of the images</li>
+                    <li>In the Top Right Corner you'll see 3 horizontal dots, Click that</li>
+                    <li>Then select <strong>Position</strong></li>
+                    <li>A panel will appear on the left side</li>
+                    <li>Scroll to where it shows the width px and height px</li>
+                </ol>
+                
+                <div class="important-box">
+                    <strong>If you're using 2 photos we want each photo to be half the width:</strong>
+                    <ul>
+                        <li>Make both images <strong>350px wide</strong> (half of 700px which is what our template is)</li>
+                        <li>Then make each image <strong>467px height</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <!-- STEP 3 -->
+        <div class="step-box">
+            <div class="step-header" onclick="toggleStep(this)">
+                <span>STEP 3: Make Background Cohesive (For 2-Image Layouts)</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="step-content">
+                <p><strong>The background image should be cohesive</strong></p>
+                
+                <p><strong>YOU HAVE A COUPLE OPTIONS:</strong></p>
+                <ul>
+                    <li><strong>Option 1:</strong> Use rectangle background matching method (detailed below)</li>
+                    <li><strong>Option 2:</strong> Remove background from both images and select neutral color</li>
+                </ul>
+                
+                <div class="important-box">
+                    <strong>OPTION 1: RECTANGLE BACKGROUND MATCHING METHOD</strong>
+                    <ol>
+                        <li>Add a rectangle shape to the template</li>
+                        <li>A circle with a filled color will appear at the top</li>
+                        <li>Click that circle</li>
+                        <li>On the left panel select the rainbow circle with the plus sign in the middle of it</li>
+                        <li>Select the <strong>Eye Dropper Tool</strong></li>
+                        <li>Using the Eye Dropper select the background of the photo that still has its background</li>
+                        <li>Resize the rectangle to take up half of the space</li>
+                        <li>Click the three horizontal dots on the top right</li>
+                        <li>Select <strong>Position</strong></li>
+                        <li>Select <strong>Back</strong></li>
+                    </ol>
+                </div>
+                
+                <div class="important-box">
+                    <strong>OPTION 2: NEUTRAL BACKGROUND</strong>
+                    <ol>
+                        <li>Remove the background from both images</li>
+                        <li>Click anywhere on the background</li>
+                        <li>Then click on the rainbow-filled circle in the top toolbar</li>
+                        <li>Select a previously used background color</li>
+                    </ol>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>✨ WHAT THIS DOES:</strong><br>
+                    This will move the rectangle to the back of the images creating a background color that matches the other photo on your template
+                </div>
+            </div>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <!-- STEP 4 -->
+        <div class="step-box">
+            <div class="step-header" onclick="toggleStep(this)">
+                <span>STEP 4: Download & Rename Images</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="step-content">
+                <p><strong>DOWNLOAD FROM CANVA:</strong></p>
+                <ol>
+                    <li>Navigate to <strong>Share</strong> in the top right corner</li>
+                    <li>Select <strong>Download</strong></li>
+                    <li>Always Select <strong>PNG format</strong></li>
+                </ol>
+                
+                <div class="important-box">
+                    <strong>RENAME THE IMAGES:</strong><br><br>
+                    Use numbers for each photo so you know where each photo should be inserted into the email.
+                </div>
+                
+                <div class="success-box">
+                    <strong>EXAMPLE:</strong>
+                    <ul>
+                        <li>Buck_Mason_Mainstay_Cotton_Cut-Off_Short_Sleeve_Button_Down_EMAIL_01</li>
+                        <li>Buck_Mason_Mainstay_Cotton_Cut-Off_Short_Sleeve_Button_Down_EMAIL_02</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <!-- STEP 5 -->
+        <div class="step-box">
+            <div class="step-header" onclick="toggleStep(this)">
+                <span>STEP 5: Create Google Photo Albums</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="step-content">
+                <p><strong>Create New folder:</strong></p>
+                
+                <div class="important-box">
+                    <strong>FILE NAMING STRUCTURE:</strong>
+                    <ul>
+                        <li>BRAND NAME EXACT PRODUCT NAME AS IT APPEARS ON PDP - ALL CAPS</li>
+                        <li>BRAND NAME EXACT COLLECTION NAME</li>
+                    </ul>
+                    <br>
+                    <strong>EXAMPLES:</strong>
+                    <ul>
+                        <li>BUCK MASON MAINSTAY COTTON CUT-OFF SHORT SLEEVE BUTTON DOWN</li>
+                        <li>B. DRADDY ZEGNA BARUFFA MERINO WOOL COLLECTION</li>
+                    </ul>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ BEFORE YOU ADD IMAGES TO THIS FOLDER:</strong><br><br>
+                    <strong>IMAGES MUST BE CLEARLY LABELED</strong><br><br>
+                    This way writers are able to decipher quickly what the product is and what brand it is<br><br>
+                    Each image should have the brand name in all CAPS at the beginning of each file name<br><br>
+                    <strong>Example:</strong> BUCK MASON Rugby Jersey
+                </div>
+                
+                <div class="warning-box">
+                    <strong>🚫 DON'T INCLUDE:</strong><br><br>
+                    Don't select the images you created in Canva for the Dropbox - Those are just for the EMAIL PITCH<br><br>
+                    <strong>YOU WILL SELECT THE INDIVIDUAL IMAGES TO ADD TO THE DROPBOX:</strong>
+                    <ul>
+                        <li>A Flat lay of product</li>
+                        <li>Full Product on Model</li>
+                        <li>Close up image of product</li>
+                        <li>Follow for each colorway of each product</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <!-- STEP 6 -->
+        <div class="step-box">
+            <div class="step-header" onclick="toggleStep(this)">
+                <span>STEP 6: Share Google Photo Album</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="step-content">
+                <p><strong>Sharing Process:</strong></p>
+                <ol>
+                    <li>Navigate the the 3 vertical dots (in the upper right hand corner)</li>
+                    <li>Select Options</li>
+                    <li>De-select all options EXCEPT Link Sharing</li>
+                    <li>Select "Copy Link"</li>
+                </ol>
+                
+                <div class="success-box">
+                    <strong>This is the link you will paste into your pitch to share with editors</strong>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flow-arrow">↓</div>
+        
+        <!-- STEP 7 -->
+        <div class="step-box">
+            <div class="step-header" onclick="toggleStep(this)">
+                <span>STEP 7: Inserting Images into the Pitch</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="step-content">
+                <p><strong>Use the Canva images you created</strong></p>
+                
+                <div class="important-box">
+                    <strong>IMAGE PLACEMENT:</strong>
+                    <ul>
+                        <li><strong>The first image is the "hero image"</strong> - This image is inserted right after your signature</li>
+                        <li><strong>The rest of the images</strong> should be inserted at the end of the pitch after the rest of the text</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 REMEMBER:</strong><br>
+                    The numbered images (Email1, Email2, etc.) guide you on the order of insertion
+                </div>
+            </div>
+        </div>
+        
+        <div class="completion">
+            ✅ Process Complete!<br>
+            <span style="font-size: 0.8em; font-weight: normal;">Your images are properly formatted, organized in Google Photos, and ready to insert into your pitch</span>
+        </div>
+    </div>
+    
+    <script>
+        function toggleOption(header) {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('.arrow');
+            
+            content.classList.toggle('active');
+            arrow.classList.toggle('rotated');
+        }
+        
+        function toggleStep(header) {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('.arrow');
+            
+            content.classList.toggle('active');
+            arrow.classList.toggle('rotated');
+        }
+        
+        function toggleAll() {
+            const allContents = document.querySelectorAll('.option-content, .step-content');
+            const allArrows = document.querySelectorAll('.arrow');
+            const button = document.querySelector('.expand-all');
+            
+            const anyOpen = Array.from(allContents).some(content => content.classList.contains('active'));
+            
+            if (anyOpen) {
+                allContents.forEach(content => content.classList.remove('active'));
+                allArrows.forEach(arrow => arrow.classList.remove('rotated'));
+                button.textContent = 'Expand All Steps';
+            } else {
+                allContents.forEach(content => content.classList.add('active'));
+                allArrows.forEach(arrow => arrow.classList.add('rotated'));
+                button.textContent = 'Collapse All Steps';
+            }
+        }
+    </script>
+</body>
+</html>
